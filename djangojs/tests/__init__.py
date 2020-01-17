@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=W0401
-from __future__ import unicode_literals
+
 from .test_context import *
 from .test_globber import *
 from .test_javascript import *
