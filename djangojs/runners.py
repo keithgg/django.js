@@ -2,7 +2,7 @@
 '''
 This module provide Javascript test runners for Django unittest.
 '''
-from __future__ import unicode_literals
+
 
 import os
 import re
@@ -125,7 +125,7 @@ class PhantomJsRunner(object):
         if VERBOSE:
             print('')
             print(separator)
-            print(' ' * nb_spaces + title)
+            print((' ' * nb_spaces + title))
             print(separator)
             sys.stdout.flush()
 
@@ -138,7 +138,7 @@ class PhantomJsRunner(object):
 
             for item in parser.parse(output):
                 if VERBOSE:
-                    print(item.display())
+                    print((item.display()))
                     sys.stdout.flush()
 
         if VERBOSE:

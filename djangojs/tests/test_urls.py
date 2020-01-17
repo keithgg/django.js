@@ -171,7 +171,7 @@ class UrlsTestMixin(object):
     def test_urls_disabled(self):
         '''Should be empty if settings.JS_URLS_ENABLED is False'''
         self.result = self.get_result()  # To take override_settings in account
-        self.assertEqual(len(self.result.keys()), 0)
+        self.assertEqual(len(list(self.result.keys())), 0)
 
     @override_settings(JS_CACHE_DURATION=0)
     def test_force_script_name(self):
