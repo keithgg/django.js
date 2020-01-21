@@ -3,8 +3,8 @@ import sys
 
 from os.path import join, isdir
 
-from django.conf.urls import url
-from django.views import i18n
+from django.conf.urls import re_path
+from django.views.i18n import JavaScriptCatalog
 
 from djangojs.conf import settings
 from djangojs.views import UrlsJsonView, ContextJsonView, JsInitView
@@ -31,8 +31,8 @@ def js_info_dict():
 
 
 urlpatterns = [
-    url(r'^init\.js$', JsInitView.as_view(), name='django_js_init'),
-    url(r'^urls$', UrlsJsonView.as_view(), name='django_js_urls'),
-    url(r'^context$', ContextJsonView.as_view(), name='django_js_context'),
-    url(r'^translation$', i18n.javascript_catalog, js_info_dict(), name='js_catalog'),
+    re_path(r'^init\.js$', JsInitView.as_view(), name='django_js_init'),
+    re_path(r'^urls$', UrlsJsonView.as_view(), name='django_js_urls'),
+    re_path(r'^context$', ContextJsonView.as_view(), name='django_js_context'),
+    re_path(r'^translation$', JavaScriptCatalog.get(), js_info_dict(), name='js_catalog'),
 ]
