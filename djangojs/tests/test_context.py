@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+
 import json
 
 from django import VERSION as DJANGO_VERSION
@@ -8,7 +8,7 @@ from django.contrib.auth.management import create_permissions
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.management import update_contenttypes
 from django.contrib.sessions.middleware import SessionMiddleware
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db.models import get_app
 from django.middleware.locale import LocaleMiddleware
 from django.test import TestCase
@@ -220,20 +220,20 @@ class ContextTestMixin(object):
         '''Should only have user in context if settings.JS_CONTEXT_ENABLED is False'''
         result = self.process_request()
         self.assertIn('user', result)
-        self.assertEqual(len(result.keys()), 1)
+        self.assertEqual(len(list(result.keys())), 1)
 
     @override_settings(JS_USER_ENABLED=False)
     def test_user_disabled(self):
         '''Should not have user in context if settings.JS_USER_ENABLED is False'''
         result = self.process_request()
         self.assertNotIn('user', result)
-        self.assertTrue(len(result.keys()) > 0)
+        self.assertTrue(len(list(result.keys())) > 0)
 
     @override_settings(JS_CONTEXT=['STATIC_URL', 'LANGUAGE_CODE'])
     def test_context_whitelist(self):
         '''Should only include context variable from settings.JS_CONTEXT if set'''
         result = self.process_request()
-        self.assertEqual(len(result.keys()), 2 + 1)  # User is always in context
+        self.assertEqual(len(list(result.keys())), 2 + 1)  # User is always in context
         self.assertIn('STATIC_URL', result)
         self.assertIn('LANGUAGE_CODE', result)
 

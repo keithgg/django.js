@@ -2,11 +2,12 @@
 '''
 Provide template tags to help with Javascript/Django integration.
 '''
-from __future__ import unicode_literals
+
 
 from django import template
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.utils import six
+from django.utils.html import format_html
 
 from djangojs import JQUERY_MIGRATE_VERSION
 from djangojs.conf import settings
@@ -88,7 +89,7 @@ class VerbatimNode(template.Node):
         output = ""
         # If its text we concatenate it, otherwise it's a node and we render it
         for bit in self.text_and_nodes:
-            if isinstance(bit, basestring):
+            if isinstance(bit, str):
                 output += bit
             else:
                 output += bit.render(context)
@@ -112,9 +113,9 @@ def javascript(filename, type='text/javascript'):
     '''A simple shortcut to render a ``script`` tag to a static javascript file'''
     if '?' in filename and len(filename.split('?')) is 2:
         filename, params = filename.split('?')
-        return '<script type="%s" src="%s?%s"></script>' % (type, staticfiles_storage.url(filename), params)
+        return format_html('<script type="%s" src="%s?%s"></script>' % (type, staticfiles_storage.url(filename), params))
     else:
-        return '<script type="%s" src="%s"></script>' % (type, staticfiles_storage.url(filename))
+        return format_html('<script type="%s" src="%s"></script>' % (type, staticfiles_storage.url(filename)))
 
 
 @register.simple_tag

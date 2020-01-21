@@ -3,7 +3,8 @@ import sys
 
 from os.path import join, isdir
 
-from django.conf.urls import patterns, url
+from django.conf.urls import re_path
+from django.views.i18n import JavaScriptCatalog
 
 from djangojs.conf import settings
 from djangojs.views import UrlsJsonView, ContextJsonView, JsInitView
