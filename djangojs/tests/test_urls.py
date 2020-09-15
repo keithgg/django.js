@@ -1,7 +1,7 @@
 import json
 
 from django.core.cache import cache
-from django.urls import reverse
+from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.utils import override_settings
 from django.utils import six
@@ -171,11 +171,11 @@ class UrlsTestMixin(object):
     def test_urls_disabled(self):
         '''Should be empty if settings.JS_URLS_ENABLED is False'''
         self.result = self.get_result()  # To take override_settings in account
-        self.assertEqual(len(list(self.result.keys())), 0)
+        self.assertEqual(len(self.result.keys()), 0)
 
     @override_settings(JS_CACHE_DURATION=0)
     def test_force_script_name(self):
-        from django.urls import set_script_prefix, _prefixes
+        from django.core.urlresolvers import set_script_prefix, _prefixes
 
         try:
             set_script_prefix("/force_script")
@@ -215,7 +215,7 @@ class UrlsJsonViewTest(UrlsTestMixin, TestCase):
 
     @override_settings(JS_CACHE_DURATION=0)
     def test_force_script_name(self):
-        from django.urls import set_script_prefix, _prefixes
+        from django.core.urlresolvers import set_script_prefix, _prefixes
         try:
             url = reverse('django_js_urls')
             set_script_prefix("/force_script")

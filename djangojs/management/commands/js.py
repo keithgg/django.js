@@ -66,7 +66,7 @@ class Command(BaseCommand):
         """
         parser = argparse.ArgumentParser(prog='%s %s' % (prog_name, subcommand), description=self.help)
 
-        parser.add_argument('-v', '--verbosity', action='store', default=1, type=int, choices=list(range(4)),
+        parser.add_argument('-v', '--verbosity', action='store', default=1, type=int, choices=range(4),
             help='Verbosity level; 0=minimal output, 1=normal output, 2=verbose output, 3=very verbose output'),
         parser.add_argument('--settings',
             help='The Python path to a settings module, e.g. "myproject.settings.main". '

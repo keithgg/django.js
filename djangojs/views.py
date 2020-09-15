@@ -2,7 +2,7 @@
 '''
 This module provide helper views for javascript.
 '''
-
+from __future__ import unicode_literals
 
 import json
 import logging
@@ -12,6 +12,7 @@ from django.http import HttpResponse
 from django.utils.cache import patch_vary_headers
 from django.views.decorators.cache import cache_page
 from django.views.generic import View, TemplateView
+from django.core.cache import cache
 
 from djangojs.conf import settings
 from djangojs.urls_serializer import urls_as_dict, urls_as_json
@@ -70,6 +71,31 @@ class JsInitView(UserCacheMixin, TemplateView):
     def render_to_response(self, context, **response_kwargs):
         response_kwargs['content_type'] = JAVASCRIPT_MIMETYPE
         return super(JsInitView, self).render_to_response(context, **response_kwargs)
+
+    # eugene aded
+    def get_string(self, request, **kwargs):
+        from django.template.loader import render_to_string
+
+        cache_key = self.cache_key
+
+        result = cache.get(cache_key)
+        if result:
+            return result
+
+        context = self.get_context_data(**kwargs)
+        result = render_to_string(self.template_name, context)
+        cache.set(cache_key, result, 60 * settings.JS_CACHE_DURATION)
+        return result
+
+    def dispatch(self, request, *args, **kwargs):
+        if 'as_string' in kwargs:
+            return self.get_string(request)
+        return super(JsInitView, self).dispatch(request, *args, **kwargs)
+
+    @property
+    def cache_key(self):
+        return 'djangojs.views.JsInitView'
+    # eugene aded
 
 
 class JsonView(View):
